@@ -1,7 +1,8 @@
 <?php /** @noinspection PhpComposerExtensionStubsInspection */
 
 /**
- * @var mixed $data The data to present to user.
+ * @var mixed $data          The data to present to user.
+ * @var bool  $useDebugPrint True to use the __debug() method of the class, if available.
  */
 
 // Show JSON

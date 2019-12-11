@@ -79,12 +79,13 @@ class Helper {
 	/**
 	 * Get a human-friendly readable value of the supplied variable.
 	 *
-	 * @param mixed    $var       The variable to get the readable value.
-	 * @param int|null $maxLength The maximum length of the variable, or null for unlimited.
+	 * @param mixed    $var           The variable to get the readable value.
+	 * @param bool     $useDebugPrint True to use the __debug() method of the class, if available.
+	 * @param int|null $maxLength     The maximum length of the variable, or null for unlimited.
 	 *
 	 * @return string The human-friendly value of the supplied value.
 	 */
-	public static function getReadableValue($var, $maxLength = null) {
+	public static function getReadableValue($var, $useDebugPrint = true, $maxLength = null, $indent = 0) {
 
 		// Get the proper string representation, based on the type of the variable
 		$type = null;
@@ -113,15 +114,30 @@ class Helper {
 				}
 				break;
 
-			case VarType::ARRAY_:
+			/** @noinspection PhpMissingBreakStatementInspection */
 			case VarType::OBJECT_:
+
+				// Check for debug info
+				if ($useDebugPrint && method_exists($var, '__debug')) {
+					$var = $var->__debug();
+					break;
+				}
+
+			case VarType::ARRAY_:
 
 				// Make sure to print just class name for huge objects
 				if ($maxLength && Helper::len(serialize($var)) > $maxLength) {
 					$var = 'HUGE ' . (is_array($var) ? 'Array' : get_class($var));
 				}
 
-				$var = print_r($var, true);
+				// Handle arrays
+				if (is_array($var)) {
+					foreach ($var as $i => $value) {
+						$var[$i] = static::getReadableValue($value, $useDebugPrint, $maxLength, $indent + 4);
+					}
+				}
+
+				$var = str_replace("\n", "\n" . str_repeat("  ", $indent), trim(print_r($var, true))) . "\n";
 				break;
 
 			case VarType::RESOURCE_:

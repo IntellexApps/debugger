@@ -33,7 +33,6 @@ $globals = [ 'Get' => $_GET, 'Post' => $_POST, 'Server' => $_SERVER, 'Cookie' =>
 		* { box-sizing: border-box; }
 		html { min-height: 100%; }
 		body { padding: 0 0 42px 0; margin: 0; font: normal 16px Arial; background: white; width: 100%; min-height: 100%; color: #444; }
-
 		/* Header */
 		header { padding: 24px 24px 0 24px; background: #C05C5C; color: white; top: 0; left: 0; right: 0; position: relative; }
 		header h1 { font-size: 24px; margin: 0 0 24px 0; }
@@ -43,25 +42,21 @@ $globals = [ 'Get' => $_GET, 'Post' => $_POST, 'Server' => $_SERVER, 'Cookie' =>
 		header nav a { display: inline-block; padding: 12px 24px; border: solid 1px transparent; text-decoration: none !important; color: white; font-size: 18px; }
 		header nav a:hover { background: white; color: #555; }
 		header nav a.active { color: #555; background: white; border-color: #bbb; border-bottom: solid 1px white; }
-
 		/* Sections */
 		section { display: none; }
 		section.active { display: block; }
-
 		/* Stack trace list */
 		ul.trace { list-style: none; padding: 0; margin: 0; }
 		ul.trace > li { border-bottom: 1px solid #BBB; }
 		ul.trace > li .header { font-size: 22px; text-decoration: none !important; width: 100%; padding: 12px 24px; color: inherit; display: block; }
 		ul.trace > li .header[href]:hover { background-color: #EEE; }
 		ul.trace > li .header:nth-child(0) { display: none; }
-
 		/* Stack trace header */
 		.class { color: #3f98cf; }
 		.type { color: #3f98cf; }
 		.function { color: #3f98cf; }
 		.arg { color: #888; }
 		.path { color: #888; margin-top: 6px; padding-left: 24px; }
-
 		/* Stack trace code snippet */
 		pre.global { padding: 24px; margin: 0; }
 		div.code { display: none; padding: 12px 48px 12px; }
@@ -77,7 +72,6 @@ $globals = [ 'Get' => $_GET, 'Post' => $_POST, 'Server' => $_SERVER, 'Cookie' =>
 		div.intellex-debugger-code span.php-html { }
 		div.intellex-debugger-code span.php-keyword { color: #1967E1; }
 		div.intellex-debugger-code span.php-string { color: #129712; }
-
 		/* Footer */
 		footer { position: fixed; bottom: 0; left: 0; right: 0; padding: 12px; text-align: center; background: #C05C5C; color: white; width: 100%; }
 		footer a { color: inherit; text-decoration: none; }
@@ -120,7 +114,7 @@ $globals = [ 'Get' => $_GET, 'Post' => $_POST, 'Server' => $_SERVER, 'Cookie' =>
 						<span class="function"><?php echo $step->getFunction() ?></span>
 						(<?php if ($step->getArgs())
 							foreach ($step->getArgs() as $a => $arg)
-								echo ($a ? ', ' : null) . '<span class="arg">' . \Intellex\Debugger\Helper::getReadableValue($arg, 256) . '</span>' ?>)
+								echo ($a ? ', ' : null) . '<span class="arg">' . \Intellex\Debugger\Helper::getReadableValue($arg, false, 256) . '</span>' ?>)
 					<?php } ?>
 
 					<div class="path"><?php echo $step->getFile() ? $step->getFile() . ($step->getLine() ? ' : ' . $step->getLine() : null) : null ?></div>
@@ -137,7 +131,7 @@ $globals = [ 'Get' => $_GET, 'Post' => $_POST, 'Server' => $_SERVER, 'Cookie' =>
 
 <?php foreach ($globals as $code => $data) { ?>
 	<section id="<?php echo $code ?>">
-		<pre class="global"><?php echo \Intellex\Debugger\Helper::getReadableValue($data) ?></pre>
+		<pre class="global"><?php echo \Intellex\Debugger\Helper::getReadableValue($data, false) ?></pre>
 	</section>
 <?php } ?>
 

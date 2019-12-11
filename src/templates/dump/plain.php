@@ -1,7 +1,8 @@
 <?php
 
 /**
- * @var mixed $data The data to present to user.
+ * @var mixed $data          The data to present to user.
+ * @var bool  $useDebugPrint True to use the __debug() method of the class, if available.
  */
 
 // Style
@@ -24,7 +25,7 @@ $template .= $chars[2][0] . str_repeat(' ', $wide - 2) . $chars[2][2] . "\n";
 $template .= $chars[3][0] . str_repeat($chars[3][1], $wide - 2) . $chars[3][2] . "\n";
 
 // Create
-$lines = explode("\n", \Intellex\Debugger\Helper::getReadableValue($data['value']));
+$lines = explode("\n", \Intellex\Debugger\Helper::getReadableValue($data['value'], $useDebugPrint));
 
 // Lines
 foreach ($lines as $i => $val) {
@@ -35,5 +36,3 @@ foreach ($lines as $i => $val) {
 
 // Print
 printf($template, $data['file'] . ' : ' . $data['line'], implode("\n", $lines));
-
-

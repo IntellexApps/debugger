@@ -39,7 +39,7 @@ class Config {
 		return static::$maxDumpSize;
 	}
 
-	/** @param int The width for the plain format. */
+	/** @param int $widthForPlain The width for the plain format. */
 	public static function setWidthForPlain($widthForPlain) {
 		self::$widthForPlain = $widthForPlain;
 	}

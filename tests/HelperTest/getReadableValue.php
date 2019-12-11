@@ -52,7 +52,7 @@ $cases = [
 	// Array
 	[ [ ],                           "Array\n(\n)\n" ],
 	[ [ 'Off', 'On' ],               "Array\n(\n    [0] => Off\n    [1] => On\n)\n" ],
-	[ [ 'key' => [ 'value' => 2 ] ], "Array\n(\n    [key] => Array\n        (\n            [value] => 2\n        )\n\n)\n" ],
+	[ [ 'key' => [ 'value' => 2 ] ], "Array\n(\n    [key] => Array\n        (\n            [value] => integer: 2\n        )\n\n)\n" ],
 
 ];
 

@@ -37,9 +37,9 @@ abstract class VarType {
 	/**
 	 * Get the variable type of the supplied variable.
 	 *
-	 * @param	mixed	The variable to check the type.
+	 * @param mixed $var The variable to check the type.
 	 *
-	 * @return	string	The type of the supplied variable.
+	 * @return string The type of the supplied variable.
 	 */
 	public static function of($var) {
 		switch(true) {

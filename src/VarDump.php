@@ -10,17 +10,19 @@ class VarDump {
 	/**
 	 * Dump the variable data in an appropriate template.
 	 *
-	 * @param mixed $var       The variable to print.
-	 * @param int   $traceSkip An optional number of skips in the trace, in order to avoid same
-	 *                         last step (ie. when called from a intermediate helper function).
+	 * @param mixed $var           The variable to print.
+	 * @param bool  $useDebugPrint True to use the __debug() method of the class, if available.
+	 * @param int   $traceSkip     An optional number of skips in the trace, in order to avoid same
+	 *                             last step (ie. when called from a intermediate helper function).
 	 */
-	public static function from($var, $traceSkip = 0) {
+	public static function from($var, $useDebugPrint = true, $traceSkip = 0) {
 
 		// Initialize the data
 		$data = [
-			'file'  => null,
-			'line'  => null,
-			'value' => $var
+			'file'          => null,
+			'line'          => null,
+			'value'         => $var,
+			'useDebugPrint' => false
 		];
 
 		// From where it was called
