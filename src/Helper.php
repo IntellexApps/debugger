@@ -108,7 +108,7 @@ class Helper {
 				break;
 
 			case VarType::STRING_:
-				if (empty($var) || trim($var) !== $var) {
+				if (empty($var) || is_numeric($var) || trim($var) !== $var) {
 					$type = 'string(' . Helper::len($var) . ')';
 					$var = '"' . $var . '"';
 				}
