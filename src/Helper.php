@@ -126,8 +126,12 @@ class Helper {
 			case VarType::ARRAY_:
 
 				// Make sure to print just class name for huge objects
-				if ($maxLength && Helper::len(serialize($var)) > $maxLength) {
-					$var = 'HUGE ' . (is_array($var) ? 'Array' : get_class($var));
+				if (static::isSerializable($var)) {
+					if ($maxLength && Helper::len(serialize($var)) > $maxLength) {
+						$var = 'HUGE ' . (is_array($var) ? 'Array' : get_class($var));
+					}
+				} else {
+					$var = 'Cannot be serialized';
 				}
 
 				// Handle arrays
@@ -202,6 +206,40 @@ class Helper {
 		$text = implode(PHP_EOL, $output);
 
 		return '<div class="intellex-debugger-code">' . $text . '</div>';
+	}
+
+	/**
+	 * Check if a variable can be serialized.
+	 *
+	 * @param mixed $var     The variable to check.
+	 * @param bool  $iterate True to check for all elements inside the variable as well.
+	 *
+	 * @return bool True if the variable can be serialized, false otherwise.
+	 */
+	public static function isSerializable($var, $iterate = true) {
+
+		// Resources cannot be serialized
+		if (is_resource($var)) {
+			return false;
+		}
+
+		// Some objects cannot be serialized as well
+		if (is_object($var)) {
+			if ($var instanceof Closure || (!$var instanceof Serializable && !$var instanceof ArrayAccess)) {
+				return false;
+			}
+		}
+
+		// Make sure all elements are serializable
+		if ($iterate && is_iterable($var)) {
+			foreach ($var as $key => $value) {
+				if (!static::isSerializable($value, true)) {
+					return false;
+				}
+			}
+		}
+
+		return true;
 	}
 
 	/**
