@@ -1,5 +1,9 @@
 <?php namespace Intellex\Debugger;
 
+use ArrayAccess;
+use Closure;
+use Serializable;
+
 /**
  * Class Helper provide utility methods for the debugger and incident handler.
  *
@@ -27,7 +31,7 @@ class Helper {
 	}
 
 	/**
-	 * Shorten the input to a max length, with a ellipsis after it.
+	 * Shorten the input to a max length, with an ellipsis after it.
 	 *
 	 * @param string $string    The original input to shorten.
 	 * @param int    $maxLength The maximum length of the resulting string (including ellipsis).
@@ -160,10 +164,10 @@ class Helper {
 	/**
 	 * Format the supplied PHP code, as HTML readable string.
 	 *
-	 * @param string $code   The code to format.
-	 * @param string $select The line to highlight, starting at index 0.
-	 * @param string $from   The first line to print, starting at index 0.
-	 * @param string $to     The last line to print, starting at index 0.
+	 * @param string   $code   The code to format.
+	 * @param string   $select The line to highlight, starting at index 0.
+	 * @param int|null $from   The first line to print, starting at index 0.
+	 * @param int|null $to     The last line to print, starting at index 0.
 	 *
 	 * @return string  The human-friendly formatted code.
 	 */
@@ -223,17 +227,20 @@ class Helper {
 			return false;
 		}
 
+		// Always allow
+		if ($var instanceof Serializable || $var instanceof ArrayAccess) {
+			return true;
+		}
+
 		// Some objects cannot be serialized as well
-		if (is_object($var)) {
-			if ($var instanceof Closure || (!$var instanceof Serializable && !$var instanceof ArrayAccess)) {
-				return false;
-			}
+		if ($var instanceof Closure) {
+			return false;
 		}
 
 		// Make sure all elements are serializable
-		if ($iterate && is_iterable($var)) {
-			foreach ($var as $key => $value) {
-				if (!static::isSerializable($value, true)) {
+		if ($iterate && function_exists('is_iterable') && is_iterable($var)) {
+			foreach ($var as $value) {
+				if (!static::isSerializable($value)) {
 					return false;
 				}
 			}

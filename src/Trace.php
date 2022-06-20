@@ -1,13 +1,15 @@
 <?php namespace Intellex\Debugger;
 
+use Throwable;
+
 /**
- * Class Trace holds all of the information about the stack trace.
+ * Class Trace holds all the information about the stack trace.
  *
  * @package Intellex\Debugger
  */
 class Trace {
 
-	/** @var \Throwable The throwable from which the trace was extracted. */
+	/** @var Throwable The throwable from which the trace was extracted. */
 	private $throwable;
 
 	/** @var TraceStep|null The original source of an error. */
@@ -19,11 +21,11 @@ class Trace {
 	/**
 	 * Trace constructor.
 	 *
-	 * @param \Throwable $throwable        The throwable from which the trace was extracted.
-	 * @param int|null   $contextLineCount The number of lines around the failing line to preserve,
+	 * @param Throwable $throwable         The throwable from which the trace was extracted.
+	 * @param int|null  $contextLineCount  The number of lines around the failing line to preserve,
 	 *                                     or null to show the whole file.
 	 */
-	public function __construct(\Throwable $throwable, $contextLineCount) {
+	public function __construct(Throwable $throwable, $contextLineCount) {
 		$this->throwable = $throwable;
 
 		// Extract the origin
@@ -60,8 +62,8 @@ class Trace {
 		}
 	}
 
-	/** @return \Throwable The throwable from which the trace was extracted. */
-	public function getThrowable() {
+	/** @return Throwable The throwable from which the trace was extracted. */
+	public function getThrowable(): Throwable {
 		return $this->throwable;
 	}
 
@@ -71,7 +73,7 @@ class Trace {
 	}
 
 	/** @return TraceStep[] The list of all steps in the back trace. */
-	public function getSteps() {
+	public function getSteps(): array {
 		return $this->steps;
 	}
 
